@@ -32,6 +32,7 @@ async function exec(cmd, args, opts) {
 const manifestsPath = checkEnv("MANIFESTS_PATH");
 const distPath = checkEnv("DIST_PATH");
 const workPath = checkEnv("WORK_PATH");
+const changesPath = process.env["CHANGES_PATH"];
 
 const pluginManifests = (await fs.readdir(manifestsPath, { withFileTypes: true }))
     .filter(d => d.isFile() && d.name.endsWith(".json"))
@@ -41,6 +42,14 @@ if (fssync.existsSync(workPath)) {
     await fs.rm(workPath, { recursive: true });
 }
 await fs.mkdir(workPath);
+
+if (changesPath) {
+    if (fssync.existsSync(changesPath)) {
+        await fs.rm(changesPath, { recursive: true });
+    }
+    await fs.mkdir(changesPath);
+}
+ 
 
 var currentState = {};
 
@@ -119,6 +128,9 @@ async function run(id, manifest) {
 
     await fs.mkdir(targetDir, { recursive: true });
     await fs.cp(plugDistPath, targetDir, { recursive: true });
+    if (changesPath) {
+        await fs.cp(plugDistPath, path.join(changesPath, id), { recursive: true });
+    }
 }
 
 // Build changed plugins
