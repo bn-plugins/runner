@@ -1,0 +1,7 @@
+{
+    "name": "@bn-plugins/runner",
+    "private": true,
+    "scripts": {
+      "runner": "node scripts/runner.mjs"
+    }
+  }
