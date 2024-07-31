@@ -28,6 +28,7 @@ const manifestPath = path.join(workPath, "manifest.json");
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 
 await exec("git", ["clone", manifest.repository, gitPath]);
+await exec("git", ["config", "--local", "advice.detachedHead", "false"], { cwd: gitPath });
 await exec("git", ["checkout", manifest.commit], { cwd: gitPath });
 execSync(manifest.command, { cwd: gitPath });
 
