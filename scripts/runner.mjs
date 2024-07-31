@@ -158,7 +158,7 @@ for (const name of changed) {
 
 // Yeet deleted plugins
 for (const id of deleted) {
-    const pluginDir = path.join(distPath, "plugins", `${id}.json`);
+    const pluginDir = path.join(distPath, "plugins", id);
     if (fssync.existsSync(pluginDir)) {
         await fs.rm(pluginDir, { recursive: true });
     }
