@@ -138,6 +138,8 @@ for (const id of changed) {
     await run(id, currentState[id]);
 }
 
+let changedMsg = "";
+
 for (const name of changed) {
     const oldCommit = prevState[name]?.commit ?? "<none>";
     const newCommit = currentState[name].commit;
@@ -153,8 +155,10 @@ for (const name of changed) {
         msg += ` (${diffUrl})`;
     }
 
-    console.log(msg);
+    changedMsg += msg + "\n";
 }
+
+console.log(changedMsg);
 
 // Yeet deleted plugins
 for (const id of deleted) {
@@ -192,3 +196,12 @@ for (const id of await fs.readdir(pluginsDistPath)) {
 };
 
 await fs.writeFile(repoJsonPath, JSON.stringify(repo));
+
+export function postComment({ github, context }) {
+    github.rest.issues.createComment({
+      issue_number: context.issue.number,
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      body: changedMsg
+    });
+}
