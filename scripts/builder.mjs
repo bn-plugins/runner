@@ -33,7 +33,7 @@ await exec("git", ["checkout", manifest.commit], { cwd: gitPath });
 execSync(manifest.command, { cwd: gitPath });
 
 fs.cpSync(
-    path.join(gitPath, manifest.distFolder ?? `dist/plugins/${manifest.id}`),
+    path.join(gitPath, manifest.distFolder ?? `dist/builds/${manifest.id}`),
     path.join(workPath, "dist"),
     { force: true, recursive: true }
 );
