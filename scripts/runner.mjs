@@ -121,7 +121,7 @@ async function run(id, manifest) {
         process.exit(1);
     }
 
-    const targetDir = path.join(distPath, "plugins", id);
+    const targetDir = path.join(distPath, "builds", id);
     if (fssync.existsSync(targetDir)) {
         await fs.rm(targetDir, { recursive: true });
     }
@@ -162,7 +162,7 @@ console.log(changedMsg);
 
 // Yeet deleted plugins
 for (const id of deleted) {
-    const pluginDir = path.join(distPath, "plugins", id);
+    const pluginDir = path.join(distPath, "builds", id);
     if (fssync.existsSync(pluginDir)) {
         await fs.rm(pluginDir, { recursive: true });
     }
@@ -172,7 +172,7 @@ for (const id of deleted) {
 }
 
 // Remove the previous repo.json, if any
-const pluginsDistPath = path.join(distPath, "plugins");
+const pluginsDistPath = path.join(distPath, "builds");
 const repoJsonPath = path.join(distPath, "repo.json");
 
 if (fssync.existsSync(repoJsonPath)) {
